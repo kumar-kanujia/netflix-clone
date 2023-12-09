@@ -1,6 +1,11 @@
+import Billboard from "@/components/Billboard";
+import MovieList from "@/components/MovieList";
+import Navbar from "@/components/Navbar";
 import useCurrentUser from "@/hooks/useCurrentUser";
+import useFavorites from "@/hooks/useFavorites";
+import useMovieList from "@/hooks/useMovieList";
 import { NextPageContext } from "next";
-import { getSession, signOut } from "next-auth/react";
+import { getSession } from "next-auth/react";
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
@@ -18,15 +23,17 @@ export async function getServerSideProps(context: NextPageContext) {
 }
 
 export default function Home() {
-  const { user } = useCurrentUser();
+  const { movieList } = useMovieList();
+  const { favoriteMovies } = useFavorites();
 
   return (
     <>
-      <h1 className="text-2xl text-green-400">Netflix Clone</h1>
-      <h2 className="text-xl text-green-400">Welcome {user?.name}</h2>
-      <button className="h-10 w-full bg-white" onClick={() => signOut()}>
-        Sign Out
-      </button>
+      <Navbar />
+      <Billboard />
+      <div className="pb-40">
+        <MovieList title="Trending Now" data={movieList} />
+        <MovieList title="My List" data={favoriteMovies} />
+      </div>
     </>
   );
 }
