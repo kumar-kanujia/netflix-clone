@@ -10,6 +10,7 @@ interface FavoriteButtonProps {
 
 const FavoriteButton: FC<FavoriteButtonProps> = ({ movieId }) => {
   const { mutate: mutateFavorites } = useFavorites();
+
   const { user, mutate } = useCurrentUser();
 
   const isFavorite = useMemo(() => {
@@ -17,7 +18,7 @@ const FavoriteButton: FC<FavoriteButtonProps> = ({ movieId }) => {
     return list.includes(movieId);
   }, [user?.favoriteIds, movieId]);
 
-  const toggleFavorite = useCallback(async () => {
+  const toggleFavorites = useCallback(async () => {
     let response;
 
     if (isFavorite) {
@@ -41,10 +42,11 @@ const FavoriteButton: FC<FavoriteButtonProps> = ({ movieId }) => {
   return (
     <div
       className="cursor-pointer group/item w-6 h-6 lg:w-10 lg:h-10 border-white border-2 rounded-full flex justify-center items-center transition hover:border-neutral-300"
-      onClick={toggleFavorite}
+      onClick={toggleFavorites}
     >
       <Icon className="text-white" size={25} />
     </div>
   );
 };
+
 export default FavoriteButton;
